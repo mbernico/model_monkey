@@ -1,7 +1,7 @@
 """
 Model Monkey - Application for testing ML Models deployed as RESTful API Endpoints
 """
-from util.utils import load_config
+from model_monkey.util.utils import load_config
 import requests
 
 

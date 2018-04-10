@@ -17,14 +17,10 @@ def adder(a,b):
 
 @app.route('/v666/predict/', methods=['POST'])
 def predict():
-    content = request.get_json(silent=True)
-
-    if content.ok:
-        a, b = unpack_payload(content)
-        answer = adder(a,b)
-        return jsonify({'answer': answer})
-    else:
-        flash("Bad Request")
+    content = request.json
+    a, b = unpack_payload(content)
+    answer = adder(a,b)
+    return jsonify({"answer":answer})
 
 
 if __name__ == "__main__":
