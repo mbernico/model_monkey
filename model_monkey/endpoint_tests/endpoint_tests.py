@@ -11,12 +11,15 @@ class BaseTest(ABC):
     def run_test(self):
         return False
 
-    def _send_request(self, json):
+    def _send_request(self, method='post', json=None):
         """
         Sends a request to the configured RESTful endpoint
+        
+        :param method: http method to use
+        :param method: json data to pass
         :return: endpoint response
         """
-        response = requests.post(self.url,json=json)
+        response = getattr(requests,method)(self.url,json=json) 
         return response
 
 
