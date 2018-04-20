@@ -1,0 +1,1 @@
+from model_monkey.endpoint_tests.endpoint_tests import *

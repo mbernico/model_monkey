@@ -2,7 +2,14 @@
 Model Monkey - Application for testing ML Models deployed as RESTful API Endpoints
 """
 from model_monkey.util.utils import load_config
+from model_monkey.endpoint_tests import TestFactory
 import requests
+
+
+def create_arguments(test):
+    arguments = dict(test)
+    del arguments['type']
+    return arguments
 
 
 def get_tests_from_config(config):
@@ -11,9 +18,12 @@ def get_tests_from_config(config):
     :param config: configuration dictionary loaded from JSON
     :return: list of test objects
     """
-    # TODO config should contain more than one test.
-    # TODO get test config and return a list of test objs
-    pass
+    list_of_test_objects = list()
+    config_test_list = config['tests']
+    for test in config_test_list:
+        arguments = create_arguments(test)
+        list_of_test_objects.append(TestFactory.create(test['type'], **arguments))
+    return list_of_test_objects
 
 
 def execute_tests(tests):
