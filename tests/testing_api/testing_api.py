@@ -11,7 +11,7 @@ def unpack_payload(content):
     return a, b
 
 
-def adder(a,b):
+def adder(a, b):
     return a + b
 
 
@@ -19,8 +19,8 @@ def adder(a,b):
 def predict():
     content = request.json
     a, b = unpack_payload(content)
-    answer = adder(a,b)
-    return jsonify({"answer":answer})
+    answer = adder(a, b)
+    return jsonify({"answer": answer})
 
 
 if __name__ == "__main__":

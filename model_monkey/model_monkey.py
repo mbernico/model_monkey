@@ -7,6 +7,11 @@ import requests
 
 
 def create_arguments(test):
+    """
+    Arguments for a test include everything but the test type.  Arguments is a test - the type.
+    :param test:
+    :return: arguments
+    """
     arguments = dict(test)
     del arguments['type']
     return arguments
@@ -30,19 +35,16 @@ def execute_tests(tests):
     """
     Executes the tests in each test Obj in the lists tests
     :param tests: a list of test objects
-    :return: Nothing
+    :return: None
     """
-    # TODO execute each test in the set of tests, logging as we go.
-    pass
+    for test in tests:
+        test.run_test()
 
 
 def main():
     config = load_config("../example/sample.json")
     tests = get_tests_from_config(config)
     execute_tests(tests)
-
-
-
 
 
 if __name__ == "__main__":

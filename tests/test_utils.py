@@ -9,7 +9,7 @@ class TestUtils(unittest.TestCase):
     def test_load_json(self):
         jf = os.path.join(os.path.dirname(__file__), '../example/sample.json')
         c = load_config(jf)
-        self.assertEquals(c['name'], 'SampleModel', msg="JSON load not sane")
+        self.assertEqual(c['name'], 'SampleModel', msg="JSON load not sane")
 
 
 if __name__ == '__main__':
