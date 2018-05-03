@@ -2,7 +2,7 @@
   "name":"SampleModel",
   "tests":[
     {"type":"ExpectedValueTest",
-      "url":"localhost/v0.1/predict/",
+      "url":"http://localhost:5000/v666/predict/",
       "inputs": {"a":5, "b":5},
       "predict_label":"answer",
       "expected_output":10}

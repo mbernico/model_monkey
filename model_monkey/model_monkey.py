@@ -3,7 +3,6 @@ Model Monkey - Application for testing ML Models deployed as RESTful API Endpoin
 """
 from model_monkey.util.utils import load_config
 from model_monkey.endpoint_tests import TestFactory
-import requests
 
 
 def create_arguments(test):
