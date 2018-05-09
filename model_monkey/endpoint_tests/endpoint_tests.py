@@ -18,7 +18,7 @@ class BaseTest(ABC):
 
     @abstractmethod
     def run_test(self):
-        return False
+        pass
 
     def _send_request(self, method='post', json=None):
         """
