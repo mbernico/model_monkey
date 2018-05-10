@@ -1,5 +1,6 @@
 import requests
 from abc import ABC, abstractmethod
+from model_monkey.util import *
 
 
 class TestFactory:
@@ -15,6 +16,7 @@ class TestFactory:
 class BaseTest(ABC):
     def __init__(self, url):
         self.url = url
+        self.logger = MonkeyLogger()
 
     @abstractmethod
     def run_test(self):
@@ -34,25 +36,31 @@ class BaseTest(ABC):
 
 class ExpectedValueTest(BaseTest):
     def __init__(self, url, inputs, predict_label, expected_output):
-        self.url = url
+        super().__init__(url)
         self.inputs = inputs
         self.predict_label = predict_label
         self.expected_output = expected_output
 
     def run_test(self):
-        api_response = self._send_request(method='post', json=self.inputs)
-        api_prediction_json = api_response.json()
-        api_prediction = api_prediction_json[self.predict_label]
-        if api_prediction == self.expected_output:
-            return {"success": True,
-                    "inputs": self.inputs,
-                    "expected_output": self.expected_output,
-                    "api_prediction": api_prediction}
+        self.logger.start_timer()
+        response = self._send_request(method='post', json=self.inputs)
+        response_json = response.json()
+        api_prediction = response_json[self.predict_label]
 
-        return {"success": False,
-                "inputs": self.inputs,
-                "expected_output": self.expected_output,
-                "api_prediction": api_prediction}
+        success = False
+        if api_prediction == self.expected_output:
+            success = True
+
+        test_result = dict(test_type="ExpectedValueTest",
+                           success=success,
+                           inputs=self.inputs,
+                           expected_outputs=self.expected_output,
+                           api_output=api_prediction,
+                           response_code=response.status_code)
+
+        self.logger.log(**test_result)
+        return test_result
+
 
 
 

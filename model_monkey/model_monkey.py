@@ -1,8 +1,9 @@
 """
 Model Monkey - Application for testing ML Models deployed as RESTful API Endpoints
 """
-from model_monkey.util.utils import load_config
+from model_monkey.util import load_config, parse_args
 from model_monkey.endpoint_tests import TestFactory
+import sys
 
 
 def create_arguments(test):
@@ -40,8 +41,14 @@ def execute_tests(tests):
         test.run_test()
 
 
-def main():
-    config = load_config("../example/sample.json")
+def main(config=None):
+
+    if config is None:
+        # called from the command line so parse configuration
+        args = parse_args(sys.argv[1:])
+        config = load_config(args['config'])
+
+    # config = load_config("../example/sample.json")
     tests = get_tests_from_config(config)
     execute_tests(tests)
 

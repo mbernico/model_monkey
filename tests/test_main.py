@@ -5,8 +5,11 @@ import pytest
 from model_monkey.model_monkey import *
 from model_monkey.endpoint_tests import *
 
+
 @pytest.fixture
-def config():
+def set_up():
+    os.environ['NO_PROXY'] = 'localhost'  # only needed when running against testing_api.py
+
     return {
         "name": "SampleModel",
         "tests": [
@@ -19,18 +22,17 @@ def config():
     }
 
 
-
-def test_get_tests_from_config(config):
-    tests = get_tests_from_config(config)
+def test_get_tests_from_config(set_up):
+    tests = get_tests_from_config(set_up)
     assert type(tests) is list
     assert isinstance(tests[0], ExpectedValueTest)
 
 
-def test_execute_tests(config):
-    tests = get_tests_from_config(config)
+def test_execute_tests(set_up):
+    tests = get_tests_from_config(set_up)
     assert execute_tests(tests) is None
 
 
-def test_main(config):
+def test_main(set_up):
     # At this point it doesn't seem sensible to test main()
     pass
