@@ -11,21 +11,21 @@ def set_proxy():
 
 
 def test_good_ExpectedValueTest(set_proxy):
-    evt = ExpectedValueTest(url="http://localhost:5000/v666/predict/", inputs={"a": 5, "b": 5},
+    evt = ExpectedValueTest(url="http://localhost:5000/v666/predict/",headers=None, inputs={"a": 5, "b": 5},
                             predict_label="answer", expected_output=10)
     test_result = evt.run_test()
     assert test_result['success'] is True
 
 
 def test_bad_ExpectedValueTest(set_proxy):
-    evt = ExpectedValueTest(url="http://localhost:5000/v666/predict/", inputs={"a": 5, "b": 5},
+    evt = ExpectedValueTest(url="http://localhost:5000/v666/predict/",headers=None, inputs={"a": 5, "b": 5},
                             predict_label="answer", expected_output=11)
     test_result = evt.run_test()
     assert test_result['success'] is False
 
 
 def test_factory_success():
-    evt = TestFactory.create("ExpectedValueTest", url="localhost/blah/predict/", inputs=[1, 2, 3],
+    evt = TestFactory.create("ExpectedValueTest", url="localhost/blah/predict/",headers=None, inputs=[1, 2, 3],
                              predict_label='predict', expected_output=6)
     assert isinstance(evt, ExpectedValueTest)
 

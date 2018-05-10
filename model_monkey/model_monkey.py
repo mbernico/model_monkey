@@ -8,7 +8,7 @@ import sys
 
 def create_arguments(test):
     """
-    Arguments for a test include everything but the test type.  Arguments is a test - the type.
+    Arguments for a test include everything but the test type.  Arguments is a test minus the type.
     :param test:
     :return: arguments
     """

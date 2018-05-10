@@ -22,7 +22,7 @@ class BaseTest(ABC):
     def run_test(self):
         pass
 
-    def _send_request(self, method='post', json=None):
+    def _send_request(self, method='post', headers=None, json=None):
         """
         Sends a request to the configured RESTful endpoint
         
@@ -30,20 +30,21 @@ class BaseTest(ABC):
         :param method: json data to pass
         :return: endpoint response
         """
-        response = getattr(requests, method)(self.url, json=json)
+        response = getattr(requests, method)(self.url, headers=headers, json=json)
         return response
 
 
 class ExpectedValueTest(BaseTest):
-    def __init__(self, url, inputs, predict_label, expected_output):
+    def __init__(self, url, headers, inputs, predict_label, expected_output):
         super().__init__(url)
+        self.headers = headers
         self.inputs = inputs
         self.predict_label = predict_label
         self.expected_output = expected_output
 
     def run_test(self):
         self.logger.start_timer()
-        response = self._send_request(method='post', json=self.inputs)
+        response = self._send_request(method='post', headers=self.headers, json=self.inputs)
         response_json = response.json()
         api_prediction = response_json[self.predict_label]
 

@@ -8,7 +8,7 @@ from model_monkey.util import *
 def test_load_json():
     jf = os.path.join(os.path.dirname(__file__), '../example/sample.json')
     c = load_config(jf)
-    assert c['name'] ==  'SampleModel'
+    assert c['name'] == 'SampleTestSet'
 
 
 def test_Borg():

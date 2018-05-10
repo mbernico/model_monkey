@@ -1,8 +1,12 @@
 {
-  "name":"SampleModel",
+  "name":"SampleTestSet",
   "tests":[
     {"type":"ExpectedValueTest",
       "url":"http://localhost:5000/v666/predict/",
+      "headers": {
+        "apikey": "NRf6gXUUGLNhRIGXP2fq3KeK06xJcP65",
+        "content-type": "application/json"
+      },
       "inputs": {"a":5, "b":5},
       "predict_label":"answer",
       "expected_output":10}

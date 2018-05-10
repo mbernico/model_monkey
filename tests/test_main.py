@@ -14,6 +14,10 @@ def set_up():
         "name": "SampleModel",
         "tests": [
             {"type": "ExpectedValueTest",
+             "headers":{
+                 "apikey": "NRf6gXUUGLNhRIGXP2fq3KeK06xJcP65",
+                 "content-type": "application/json"
+             },
              "url": "http://localhost:5000/v666/predict/",
              "inputs": {"a": 5, "b": 5},
              "predict_label": "answer",
