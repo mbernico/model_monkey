@@ -25,7 +25,7 @@ def test_bad_ExpectedValueTest(set_proxy):
 
 
 def test_factory_success():
-    evt = TestFactory.create("ExpectedValueTest", url="localhost/blah/predict/",headers=None, inputs=[1, 2, 3],
+    evt = TestFactory.create("ExpectedValueTest", url="localhost/blah/predict/", headers=None, inputs=[1, 2, 3],
                              predict_label='predict', expected_output=6)
     assert isinstance(evt, ExpectedValueTest)
 

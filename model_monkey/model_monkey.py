@@ -2,7 +2,7 @@
 Model Monkey - Application for testing ML Models deployed as RESTful API Endpoints
 """
 from model_monkey.util import load_config, parse_args
-from model_monkey.endpoint_tests import TestFactory
+from model_monkey.endpoint_tests.endpoint_tests import TestFactory
 import sys
 
 

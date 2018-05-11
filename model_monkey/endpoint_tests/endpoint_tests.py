@@ -46,7 +46,7 @@ class ExpectedValueTest(BaseTest):
         self.logger.start_timer()
         response = self._send_request(method='post', headers=self.headers, json=self.inputs)
         response_json = response.json()
-        api_prediction = response_json[self.predict_label]
+        api_prediction = int(response_json[self.predict_label])
 
         success = False
         if api_prediction == self.expected_output:
