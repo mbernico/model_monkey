@@ -30,7 +30,8 @@ def test_MonkeyLoggerLog(capsys):
     logger.logger.addHandler(stdout_handler)
     logger.start_timer()
     time.sleep(1)
-    logger.log(test_type="Endpoint_Test", success=True, inputs={"a": 5, "b": 5}, expected_outputs=10, api_output=10, response_code=200)
+    logger.log(test_type="Endpoint_Test", success=True, input={"a": 5, "b": 5}, expected_output=10, actual_output=10,
+               expected_http_status=200, actual_http_status=200)
     out, err = capsys.readouterr()
     assert "Endpoint_Test" in out
 

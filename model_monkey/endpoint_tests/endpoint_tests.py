@@ -1,6 +1,7 @@
 import requests
 from abc import ABC, abstractmethod
 from model_monkey.util import *
+from json import JSONDecodeError
 
 
 class TestFactory:
@@ -9,6 +10,8 @@ class TestFactory:
 
         if test_name == "ExpectedValueTest":
             return ExpectedValueTest(**kwargs)
+        if test_name == "ExpectedStatusTest":
+            return ExpectedStatusTest(**kwargs)
         else:
             raise AssertionError("Bad test type: " + test_name)
 
@@ -45,23 +48,54 @@ class ExpectedValueTest(BaseTest):
     def run_test(self):
         self.logger.start_timer()
         response = self._send_request(method='post', headers=self.headers, json=self.inputs)
-        response_json = response.json()
-        api_prediction = int(response_json[self.predict_label])
+        try:
+            response_json = response.json()
+        except JSONDecodeError:
+            self.logger.error_log("!!!TEST FAIL!!!  HTTP STATUS CODE: " + str(response.status_code))
+            return False
+        actual_output = int(response_json[self.predict_label])
 
         success = False
-        if api_prediction == self.expected_output:
+        if actual_output == self.expected_output:
             success = True
 
         test_result = dict(test_type="ExpectedValueTest",
                            success=success,
-                           inputs=self.inputs,
-                           expected_outputs=self.expected_output,
-                           api_output=api_prediction,
-                           response_code=response.status_code)
+                           input=self.inputs,
+                           expected_output=self.expected_output,
+                           actual_output=actual_output,
+                           expected_http_status=200,
+                           actual_http_status=response.status_code)
 
         self.logger.log(**test_result)
         return test_result
 
 
+class ExpectedStatusTest(BaseTest):
+    def __init__(self, url, headers, inputs, expected_http_status):
+        super().__init__(url)
+        self.headers = headers
+        self.inputs = inputs
+        self.expected_http_status = expected_http_status
+
+    def run_test(self):
+        self.logger.start_timer()
+        response = self._send_request(method='post', headers=self.headers, json=self.inputs)
+        actual_http_status = int(response.status_code)
+
+        success = False
+        if actual_http_status == self.expected_http_status:
+            success = True
+
+        test_result = dict(test_type="ExpectedValueTest",
+                           success=success,
+                           input=self.inputs,
+                           expected_output="None",
+                           actual_output="None",
+                           expected_http_status=200,
+                           actual_http_status=response.status_code)
+
+        self.logger.log(**test_result)
+        return test_result
 
 

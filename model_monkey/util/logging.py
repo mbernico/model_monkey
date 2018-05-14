@@ -21,7 +21,7 @@ class BaseLogger(Borg):
         if not hasattr(self, 'logger'):  # create a monostate logger only the first time the class is instantiated
             self.logger = logging.getLogger()
             self.logger.setLevel(logging.INFO)
-            self.fmt = logging.Formatter("%(message)s")
+            self.fmt = logging.Formatter("MONKEY_LOG:%(message)s")
             self.stdout_handler = logging.StreamHandler(sys.stdout)
             self.stdout_handler.setFormatter(self.fmt)
             self.logger.addHandler(self.stdout_handler)
@@ -52,13 +52,17 @@ class MonkeyLogger(BaseLogger):
     def __init__(self):
         super().__init__()
 
-    def log(self, test_type, success, inputs, expected_outputs, api_output, response_code):
+    def log(self, test_type, success, input, expected_output, actual_output, expected_http_status, actual_http_status):
         log_message = dict(test_type=test_type,
                            success=success,
                            timestamp=self.get_current_time(),
                            delta_time=self.get_elapsed_time(),
-                           inputs=inputs,
-                           expected_outputs=expected_outputs,
-                           api_output=api_output,
-                           response_code=response_code)
+                           input=input,
+                           expected_output=expected_output,
+                           actual_output=actual_output,
+                           expected_http_status=expected_http_status,
+                           actual_http_status=actual_http_status)
         self.logger.info(msg=json.dumps(log_message))
+
+    def error_log(self, message):
+        self.logger.error(msg=message)

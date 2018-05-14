@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import pytest
-from model_monkey.endpoint_tests import ExpectedValueTest, TestFactory
+from model_monkey.endpoint_tests import ExpectedValueTest, TestFactory, ExpectedStatusTest
 
 
 @pytest.fixture
@@ -34,3 +34,17 @@ def test_factory_failure():
     with pytest.raises(AssertionError) as context:
         TestFactory.create("BorkBorkTest")
     assert "BorkBorkTest" in str(context.value)
+
+
+def test_good_ExpectedStatusTest(set_proxy):
+    evt = ExpectedStatusTest(url="http://localhost:5000/v666/predict/", headers=None, inputs={"a": 5, "b": 5},
+                             expected_http_status=200)
+    test_result = evt.run_test()
+    assert test_result['success'] is True
+
+
+def test_bad_ExpectedStatusTest(set_proxy):
+    evt = ExpectedStatusTest(url="http://localhost:5000/v666/predict/",headers=None, inputs={"a": 5},
+                             expected_http_status=200)
+    test_result = evt.run_test()
+    assert test_result['success'] is False
